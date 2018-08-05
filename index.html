@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Epidemiology Unit Payment Calculator</title>
+
+    <!-- Bootstrap -->
+    <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Preload -->
+    <link rel="stylesheet" href="./node_modules/preload.js/dist/css/preload.css">
+
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <style media="screen">
+      body{
+        background: rgb(242, 242, 242);
+      }
+    </style>
+
+  </head>
+  <body>
+
+    <div class="main-panel" style="padding-bottom: 80px; margin-top: 30px;">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <img src="img/eu-sis-logo.png" alt="" width="100" class="mb-30">
+            <h1 class="hidden-xs">Epidemiology Unit Payment Calculator</h1>
+            <h4>Version 0.1.0</h4>
+          </div>
+        </div>
+
+        <div class="row pt-20">
+          <div class="col-sm-12">
+            <form action="#" onsubmit="return false;" id="inputForm">
+              <div class="row">
+                <div class="col-sm-12 col-md-4">
+                  <div class="form-group">
+                    <label for="">Academic enroll year: <span class="text-danger">**</span> </label>
+                    <input type="number" min="1000" max="9999" placeholder="Example 2014 ..." class="form-control" id="txtStudentId">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                  <div class="form-group">
+                    <label for="">Total yearly payment cost : <span class="text-danger">**</span></label>
+                    <input type="text" placeholder="Enter Thai rate only ..." class="form-control" id="txtPaymentcost">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                  <div class="form-group">
+                    <label for="">Degree : <span class="text-danger">**</span> </label>
+                    <select class="form-control" name="" id="txtStudentDegree">
+                      <option value="">-- Choose student degree --</option>
+                      <option value="msc">M.Sc.</option>
+                      <option value="phd">Ph.D.</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 col-md-4">
+                  <div class="form-group">
+                    <label for="">Credit : <span class="text-danger">**</span></label>
+                    <input type="number" placeholder="Enter credit ..." class="form-control" id="txtCredit">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                  <div class="form-group">
+                    <label for="">Type : <span class="text-danger">**</span></label>
+                    <select class="form-control" name="" id="txtStudentType">
+                      <option value="">-- Choose type --</option>
+                      <option value="thai">Thai</option>
+                      <option value="inter">International</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                  <div class="form-group">
+                    <label for="">Current academic year : <span class="text-danger">**</span></label>
+                    <input type="number" placeholder="Enter current academic year ..." class="form-control" id="txtStudentyear">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 text-center pt-20">
+                  <button class="btn btn-primary btn-lg" type="submit">Calculate</button>
+                  <button class="btn btn-secondary btn-lg" type="reset" id="btnReset">Reset</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- .row -->
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="resultSpan" style="border:dashed; border-width: 2px; border-color: rgb(226, 226, 226); padding: 20px;" class="mt-30 text-center">
+              Please enter input and click 'Calculate' button
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./assets/js/main.js"></script>
+    <script type="text/javascript" src="./assets/js/function.js"></script>
+    <script type="text/javascript" src="./node_modules/preload.js/dist/js/preload.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        $('#inputForm').submit(function(){
+
+          var check = 0;
+          $('.form-control').removeClass('is-invalid')
+          $('.invalid-feedback').remove()
+
+          if($('#txtStudentId').val() == ''){
+            check++
+            $('#txtStudentId').addClass('is-invalid')
+          }
+
+          if($('#txtPaymentcost').val() == ''){
+            check++
+            $('#txtPaymentcost').addClass('is-invalid')
+          }
+          if($('#txtStudentDegree').val() == ''){
+            check++
+            $('#txtStudentDegree').addClass('is-invalid')
+          }
+
+          if($('#txtStudentType').val() == ''){
+            check++
+            $('#txtStudentType').addClass('is-invalid')
+          }
+
+          if($('#txtStudentyear').val() == ''){
+            check++
+            $('#txtStudentyear').addClass('is-invalid')
+          }else{
+            if((parseInt($('#txtStudentId').val())) > (parseInt($('#txtStudentyear').val()))){
+              check++
+              $('#txtStudentyear').addClass('is-invalid')
+            }
+          }
+
+          if($('#txtCredit').val() == ''){
+            check++
+            $('#txtCredit').addClass('is-invalid')
+          }
+
+
+
+          if(check != 0){
+            return false;
+          }
+
+
+
+          preload.show()
+
+          var input_1 = $('#txtStudentId').val() // Enroll year
+          var input_2 = parseInt($('#txtPaymentcost').val()) // Payment
+          var input_3 = $('#txtStudentDegree').val() // Degree
+          var input_4 = $('#txtStudentType').val() // Thai or Inter student
+          var input_5 = $('#txtStudentyear').val() // Current academic year
+          var input_6 = $('#txtCredit').val() // Credit year
+          var yearly = 0
+          // Calculate study year
+          var p1 = parseInt($('#txtStudentId').val())
+          var p2 = parseInt($('#txtStudentyear').val())
+
+          yearly = (p2 - p1) + 1
+
+
+          var student_yearstart_con = 1
+          if(parseInt(input_1) < 2015){
+            student_yearstart_con = 0
+          }
+
+          if(student_yearstart_con == 1){ // ปี 58 เป็นต้นไป
+            if(input_3 == 'msc'){ // M.Sc
+              if(yearly > 3){ // เรียนมากกว่าปี 3
+                if(input_4 == 'thai'){ // Thai student คิดราคาปกติ
+                  if(input_6 <= 3){ // หน่วยกิตน้อยกว่าหรือเท่ากับ 3
+                    $('#resultSpan').html("Semaster cost : 10000")
+                  }else{ // หน่วยกิตเหลือมากกว่า 3
+                    $('#resultSpan').html("Semaster cost : " + (input_2/2))
+                  }
+                }else{ // Inter student คิดค่าเรียน 2 เท่า
+                  if(input_6 <= 3){ // หน่วยกิตน้อยกว่าหรือเท่ากับ 3
+                    $('#resultSpan').html("Semaster cost : 20000")
+                  }else{ // หน่วยกิตเหลือมากกว่า 3
+                    $('#resultSpan').html("Semaster cost : " + ((input_2 * 2) / 2))
+                  }
+                }
+              }else{ // เรียนน้อยกว่าปี 3
+                // คิดค่าเทอมรายปีแบบเต็ม
+                if(input_4 == 'thai'){ // Thai student คิดราคาปกติ
+                  if(input_6 <= 3){ // หน่วยกิตน้อยกว่าหรือเท่ากับ 3
+                    $('#resultSpan').html("Yealy cost : 20000")
+                  }else{ // หน่วยกิตเหลือมากกว่า 3
+                    $('#resultSpan').html("Yealy cost : " + (input_2))
+                  }
+                }else{ // Inter student คิดค่าเรียน 2 เท่า
+                  if(input_6 <= 3){ // หน่วยกิตน้อยกว่าหรือเท่ากับ 3
+                    $('#resultSpan').html("Yealy cost : 40000")
+                  }else{ // หน่วยกิตเหลือมากกว่า 3
+                    $('#resultSpan').html("Yealy cost : " + (input_2 * 2))
+                  }
+                }
+              }
+            }else{  // Ph.D.
+              if(yearly > 5){ // เรียนมากกว่าปี 5
+                if(input_4 == 'thai'){ // Thai student คิดราคาปกติ
+                  if(input_6 <= 3){ // หน่วยกิตน้อยกว่าหรือเท่ากับ 3
+                    $('#resultSpan').html("Semaster cost : 10000")
+                  }else{ // หน่วยกิตเหลือมากกว่า 3
+                    $('#resultSpan').html("Semaster cost : " + (input_2/2))
+                  }
+                }else{ // Inter student คิดค่าเรียน 2 เท่า
+                  if(input_6 <= 3){ // หน่วยกิตน้อยกว่าหรือเท่ากับ 3
+                    $('#resultSpan').html("Semaster cost : 20000")
+                  }else{ // หน่วยกิตเหลือมากกว่า 3
+                    $('#resultSpan').html("Semaster cost : " + ((input_2 * 2) / 2))
+                  }
+                }
+              }else{ // เรียนน้อยกว่าปี 3
+                // คิดค่าเทอมรายปีแบบเต็ม
+                if(input_4 == 'thai'){ // Thai student คิดราคาปกติ
+                  if(input_6 <= 3){ // หน่วยกิตน้อยกว่าหรือเท่ากับ 3
+                    $('#resultSpan').html("Yealy cost : 20000")
+                  }else{ // หน่วยกิตเหลือมากกว่า 3
+                    $('#resultSpan').html("Yealy cost : " + (input_2))
+                  }
+                }else{ // Inter student คิดค่าเรียน 2 เท่า
+                  if(input_6 <= 3){ // หน่วยกิตน้อยกว่าหรือเท่ากับ 3
+                    $('#resultSpan').html("Yealy cost : 40000")
+                  }else{ // หน่วยกิตเหลือมากกว่า 3
+                    $('#resultSpan').html("Yealy cost : " + (input_2 * 2))
+                  }
+                }
+              }
+            }
+          }else{ // ก่อนปี 58
+
+          }
+          preload.hide()
+
+        })
+
+        $('#btnReset').click(function(){
+          $('#resultSpan').html("Please enter input and click 'Calculate' button")
+        })
+      })
+    </script>
+  </body>
+</html>
